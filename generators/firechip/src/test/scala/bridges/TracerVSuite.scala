@@ -7,18 +7,14 @@ import java.io._
 import org.scalatest.Suites
 import org.scalatest.matchers.should._
 
-import org.chipsalliance.cde.config.Config
-import org.chipsalliance.cde.config.Parameters
-import org.chipsalliance.cde.config._
-
-import firesim.{BasePlatformConfig, TestSuiteCommon}
+import firesim.{BasePlatformConfig}
 
 abstract class TracerVTestBase(
   platformConfig: BasePlatformConfig,
   width:          Int,
   trace:          Option[Int]    = None,
   start:          Option[String] = None,
-) extends BridgeSuite("TracerVModule", s"TracerVModuleTestCount${width}", platformConfig) {
+) extends BridgeSuite("TracerVModule", s"TracerVModuleInstrRetireCount${width}", platformConfig) {
   override def defineTests(backend: String, debug: Boolean) {
     it should "dump traced instructions" in {
       // Create an expected file.

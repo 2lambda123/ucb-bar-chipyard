@@ -7,7 +7,7 @@ DESIGN ?= BlockDevModule
 TARGET_CONFIG_PACKAGE ?= firesim.bridges
 TARGET_CONFIG ?= NoConfig
 
-PLATFORM_CONFIG_PACKAGE ?= firesim.bridges
+PLATFORM_CONFIG_PACKAGE ?= firesim.configs
 PLATFORM_CONFIG ?= DefaultF1Config
 
 # Override project for the target.

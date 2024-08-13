@@ -9,24 +9,22 @@ import scala.sys.process.{stringSeqToProcess, ProcessLogger}
 import scala.io.Source
 import org.scalatest.Suites
 
-import firesim.configs._
 import firesim.{BasePlatformConfig, TestSuiteCommon}
 
-import org.chipsalliance.cde.config.Config
 import freechips.rocketchip.diplomacy._
 import freechips.rocketchip.system.{BenchmarkTestSuite, RocketTestSuite}
 import freechips.rocketchip.system.TestGeneration._
 import freechips.rocketchip.system.DefaultTestSuites._
 
 object BaseConfigs {
-  case object F1 extends BasePlatformConfig("f1", Seq(classOf[BaseF1Config]))
+  case object F1 extends BasePlatformConfig("f1", Seq("BaseF1Config"))
 }
 
 abstract class FireSimTestSuite(
   override val targetName:         String,
   override val targetConfigs:      String,
   override val basePlatformConfig: BasePlatformConfig,
-  override val platformConfigs:    Seq[Class[_ <: Config]] = Seq(),
+  override val platformConfigs:    Seq[String] = Seq(),
   N:                               Int                     = 8,
 ) extends TestSuiteCommon("firesim") {
   import scala.concurrent.duration._
@@ -87,7 +85,7 @@ class RocketF1Tests
       "FireSim",
       "DDR3FRFCFSLLC4MB_FireSimQuadRocketConfig",
       BaseConfigs.F1,
-      Seq(classOf[WithSynthAsserts]),
+      Seq("WithSynthAsserts"),
     )
 
 class MultiRocketF1Tests
@@ -95,7 +93,7 @@ class MultiRocketF1Tests
       "FireSim",
       "DDR3FRFCFSLLC4MB_FireSimQuadRocketConfig",
       BaseConfigs.F1,
-      Seq(classOf[WithSynthAsserts], classOf[WithModelMultiThreading]),
+      Seq("WithSynthAsserts", "WithModelMultiThreading"),
     )
 
 class BoomF1Tests

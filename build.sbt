@@ -104,6 +104,12 @@ lazy val chiselSettings = (if (chisel6) chisel6Settings else chisel3Settings) ++
   )
 )
 
+lazy val scalaTestSettings =  Seq(
+  libraryDependencies ++= Seq(
+    "org.scalatest" %% "scalatest" % "3.2.+" % "test"
+  )
+)
+
 
 // Subproject definitions begin
 
@@ -113,18 +119,11 @@ lazy val hardfloat = freshProject("hardfloat", file("generators/hardfloat/hardfl
   .settings(chiselSettings)
   .settings(commonSettings)
   .dependsOn(if (chisel6) midas_standalone_target_utils else midas_target_utils)
-  .settings(
-    libraryDependencies ++= Seq(
-      "org.scalatest" %% "scalatest" % "3.2.0" % "test"
-    )
-  )
+  .settings(scalaTestSettings)
 
 lazy val rocketMacros  = (project in rocketChipDir / "macros")
   .settings(commonSettings)
-  .settings(
-    libraryDependencies ++= Seq(
-    )
-  )
+  .settings(scalaTestSettings)
 
 lazy val diplomacy = freshProject("diplomacy", file("generators/diplomacy/diplomacy"))
   .dependsOn(cde)
@@ -136,11 +135,11 @@ lazy val rocketchip = freshProject("rocketchip", rocketChipDir)
   .dependsOn(hardfloat, rocketMacros, diplomacy, cde)
   .settings(commonSettings)
   .settings(chiselSettings)
+  .settings(scalaTestSettings)
   .settings(
     libraryDependencies ++= Seq(
       "com.lihaoyi" %% "mainargs" % "0.5.0",
       "org.json4s" %% "json4s-jackson" % "4.0.5",
-      "org.scalatest" %% "scalatest" % "3.2.0" % "test",
       "org.scala-graph" %% "graph-core" % "1.13.5"
     )
   )
@@ -282,9 +281,9 @@ lazy val dsptools = freshProject("dsptools", file(dsptoolsDir))
   .settings(
     chiselSettings,
     commonSettings,
+    scalaTestSettings,
     libraryDependencies ++= Seq(
       "edu.berkeley.cs" %% "chiseltest" % chiselTestVersion,
-      "org.scalatest" %% "scalatest" % "3.2.+" % "test",
       "org.typelevel" %% "spire" % "0.18.0",
       "org.scalanlp" %% "breeze" % "2.1.0",
       "junit" % "junit" % "4.13" % "test",
@@ -349,6 +348,7 @@ lazy val firesim_lib = (project in firesimDir / "sim/firesim-lib")
   .dependsOn(midas_target_utils)
   .settings(commonSettings)
   .settings(chiselSettings)
+  .settings(scalaTestSettings)
 
 // TODO: rename... simulation boundary or something like that
 lazy val firechip_isolated = (project in file("generators/firechip-isolated"))
@@ -364,11 +364,13 @@ lazy val firechip_firesim_only = (project in file("generators/firechip-firesim-o
     commonSettings,
   )
 
+// ensure this test area is dependent also on firesim_lib's test area
 lazy val firechip = (project in file("generators/firechip"))
-  .dependsOn(chipyard, firesim_lib, firechip_isolated)
+  .dependsOn(chipyard, firesim_lib % "compile->compile;test->test", firechip_isolated)
   .settings(
     chiselSettings,
     commonSettings,
     Test / testGrouping := isolateAllTests( (Test / definedTests).value ),
     Test / testOptions += Tests.Argument("-oF")
   )
+  .settings(scalaTestSettings)

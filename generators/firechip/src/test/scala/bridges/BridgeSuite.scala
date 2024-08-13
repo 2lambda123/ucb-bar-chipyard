@@ -7,14 +7,10 @@ import java.io._
 import org.scalatest.Suites
 import org.scalatest.matchers.should._
 
-import org.chipsalliance.cde.config.Config
-import org.chipsalliance.cde.config.Parameters
-import org.chipsalliance.cde.config._
-
 import firesim.{BasePlatformConfig, TestSuiteCommon}
 
 object BaseConfigs {
-  case object F1 extends BasePlatformConfig("f1", Seq(classOf[DefaultF1Config]))
+  case object F1 extends BasePlatformConfig("f1", Seq("DefaultF1Config"))
 }
 
 abstract class BridgeSuite(
@@ -23,6 +19,9 @@ abstract class BridgeSuite(
   override val basePlatformConfig: BasePlatformConfig,
 ) extends TestSuiteCommon("bridges")
     with Matchers {
+
+  val chipyardDir = new File(System.getProperty("user.dir"))
+  override val extraMakeArgs = Seq(s"TARGET_PROJECT_MAKEFRAG=$chipyardDir/generators/firechip/src/main/makefrag/bridges")
 
   /** Helper to generate tests strings.
     */
@@ -33,7 +32,7 @@ abstract class BridgeSuite(
   }
 }
 
-class UARTTest(targetConfig: BasePlatformConfig) extends BridgeSuite("UARTModule", "UARTConfig", targetConfig) {
+class UARTTest(targetConfig: BasePlatformConfig) extends BridgeSuite("UARTModule", "NoConfig", targetConfig) {
   override def defineTests(backend: String, debug: Boolean) {
     it should "echo input to output" in {
       // Generate a short test string.
@@ -61,7 +60,7 @@ class UARTTest(targetConfig: BasePlatformConfig) extends BridgeSuite("UARTModule
 class UARTF1Test extends UARTTest(BaseConfigs.F1)
 
 class BlockDevTest(targetConfig: BasePlatformConfig)
-    extends BridgeSuite("BlockDevModule", "BlockDevConfig", targetConfig) {
+    extends BridgeSuite("BlockDevModule", "NoConfig", targetConfig) {
   override def defineTests(backend: String, debug: Boolean) {
     it should "copy from one device to another" in {
       // Generate a random string spanning 2 sectors with a fixed seed.

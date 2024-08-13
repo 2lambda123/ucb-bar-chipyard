@@ -36,19 +36,19 @@ static std::vector<uint64_t> get_iaddrs(unsigned step, unsigned total) {
 
 static std::string namei(unsigned i) {
   std::stringstream ss;
-  ss << "io_insns_" << i << "_iaddr";
+  ss << "io_trace_retiredinsns_" << i << "_iaddr";
   return ss.str();
 };
 
 static std::string nameinsn(unsigned i) {
   std::stringstream ss;
-  ss << "io_insns_" << i << "_insn";
+  ss << "io_trace_retiredinsns_" << i << "_insn";
   return ss.str();
 };
 
 static std::string namev(unsigned i) {
   std::stringstream ss;
-  ss << "io_insns_" << i << "_valid";
+  ss << "io_trace_retiredinsns_" << i << "_valid";
   return ss.str();
 };
 
