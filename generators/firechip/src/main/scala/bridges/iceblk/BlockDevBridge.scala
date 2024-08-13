@@ -11,7 +11,7 @@ import firesim.compat._
 
 class BlockDevBridge(bdParams: BlockDeviceConfig) extends BlackBox
     with Bridge[HostPortIO[BlockDevBridgeTargetIO]] {
-  val moduleName = "BlockDevBridgeModule"
+  val moduleName = "firesim.bridges.BlockDevBridgeModule"
   val io = IO(new BlockDevBridgeTargetIO(bdParams))
   val bridgeIO = HostPort(io)
   val constructorArg = Some(bdParams)

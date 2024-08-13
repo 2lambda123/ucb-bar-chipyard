@@ -8,7 +8,7 @@ import firesim.compat._
 
 class GroundTestBridge extends BlackBox
     with Bridge[HostPortIO[GroundTestBridgeTargetIO]] {
-  val moduleName = "GroundTestBridgeModule"
+  val moduleName = "firesim.bridges.GroundTestBridgeModule"
   val io = IO(new GroundTestBridgeTargetIO)
   val bridgeIO = HostPort(io)
   val constructorArg = None

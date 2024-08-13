@@ -12,7 +12,7 @@ import firesim.compat._
 class CospikeBridge(params: CospikeBridgeParams)
     extends BlackBox
     with Bridge[HostPortIO[CospikeTargetIO]] {
-  val moduleName = "CospikeBridgeModule"
+  val moduleName = "firesim.bridges.CospikeBridgeModule"
   val io       = IO(new CospikeTargetIO(params.widths))
   val bridgeIO = HostPort(io)
 

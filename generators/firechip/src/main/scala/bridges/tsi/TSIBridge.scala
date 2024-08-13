@@ -9,7 +9,7 @@ import firesim.lib._
 import firesim.compat._
 
 class TSIBridge(memoryRegionNameOpt: Option[String]) extends BlackBox with Bridge[HostPortIO[TSIBridgeTargetIO]] {
-  val moduleName = "TSIBridgeModule"
+  val moduleName = "firesim.bridges.TSIBridgeModule"
   val io = IO(new TSIBridgeTargetIO)
   val bridgeIO = HostPort(io)
   val constructorArg = Some(TSIBridgeParams(memoryRegionNameOpt))

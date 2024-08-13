@@ -12,7 +12,7 @@ import firesim.compat._
 class DMIBridge(memoryRegionNameOpt: Option[String], addrBits: Int)
     extends BlackBox
     with Bridge[HostPortIO[DMIBridgeTargetIO]] {
-  val moduleName = "DMIBridgeModule"
+  val moduleName = "firesim.bridges.DMIBridgeModule"
   val io             = IO(new DMIBridgeTargetIO(addrBits))
   val bridgeIO = HostPort(io)
   val constructorArg = Some(DMIBridgeParams(memoryRegionNameOpt, addrBits: Int))
