@@ -13,4 +13,4 @@ class UARTDUT(implicit val p: Parameters) extends Module {
   ep.io.uart.txd := ep.io.uart.rxd
 }
 
-class UARTModule(implicit p: Parameters) extends PeekPokeMidasExampleHarness(() => new UARTDUT)
+class UARTModule(implicit p: Parameters) extends firesim.lib.PeekPokeMidasExampleHarness(() => new UARTDUT)

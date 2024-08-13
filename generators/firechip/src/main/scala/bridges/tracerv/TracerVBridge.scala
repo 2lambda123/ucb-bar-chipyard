@@ -95,9 +95,13 @@ object TracerVBridge {
     tracerv
   }
 
+  def apply(widths: testchipip.cosim.TraceBundleWidths)(implicit p: Parameters): TracerVBridge = {
+    TracerVBridge(FireSimTraceBundleWidths(widths))
+  }
+
   def apply(tracedInsns: testchipip.cosim.TileTraceIO)(implicit p: Parameters): TracerVBridge = {
     val tracerv = withClockAndReset(tracedInsns.clock, tracedInsns.reset) {
-      TracerVBridge(FireSimTraceBundleWidths(tracedInsns.traceBundleWidths))
+      TracerVBridge(tracedInsns.traceBundleWidths)
     }
     tracerv.io.tiletrace <> FireSimTileTraceIO(tracedInsns)
     tracerv

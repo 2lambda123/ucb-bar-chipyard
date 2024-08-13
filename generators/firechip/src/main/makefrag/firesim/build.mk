@@ -37,10 +37,11 @@ $(FIRRTL_FILE) $(ANNO_FILE) &: force_rule_to_run
 			TB=unused \
 			TOP=unused
 	# $(long_name) must be same as Chipyard
-	$(call COPY_IF_NOT_EQUAL,$(CHIPYARD_STAGING_DIR)/generated-src/$(long_name)/$(long_name).fir,$(FIRRTL_FILE))
-	$(call COPY_IF_NOT_EQUAL,$(CHIPYARD_STAGING_DIR)/generated-src/$(long_name)/$(long_name).anno.json,$(ANNO_FILE))
+	# only copies if updated
+	rsync -pthrvz $(CHIPYARD_STAGING_DIR)/generated-src/$(long_name)/$(long_name).fir $(FIRRTL_FILE)
+	rsync -pthrvz $(CHIPYARD_STAGING_DIR)/generated-src/$(long_name)/$(long_name).anno.json $(ANNO_FILE)
 	# .d needed to run metasim CI tests
-	$(call COPY_IF_NOT_EQUAL,$(CHIPYARD_STAGING_DIR)/generated-src/$(long_name)/$(long_name).d,$(GENERATED_DIR)/$(long_name).d)
+	rsync -pthrvz $(CHIPYARD_STAGING_DIR)/generated-src/$(long_name)/$(long_name).d $(GENERATED_DIR)/$(long_name).d
 
 #######################################
 # Setup Extra Verilator Compile Flags #
