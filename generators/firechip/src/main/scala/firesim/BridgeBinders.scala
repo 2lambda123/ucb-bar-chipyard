@@ -22,7 +22,7 @@ import icenet.{CanHavePeripheryIceNIC, SimNetwork, NicLoopback, NICKey, NICIOvon
 //import junctions.{NastiKey, NastiParameters}
 //import midas.models.{FASEDBridge, AXI4EdgeSummary, CompleteConfig}
 import firesim.bridges._
-import firesim.configs.MemModelKey
+//import firesim.configs.MemModelKey
 import tracegen.{TraceGenSystemModuleImp}
 import cva6.CVA6Tile
 
