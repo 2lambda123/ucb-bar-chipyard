@@ -42,7 +42,7 @@ object UARTBridge {
   def apply(clock: Clock, uart: sifive.blocks.devices.uart.UARTPortIO, reset: Bool, freqMHz: Int)(implicit p: Parameters): UARTBridge = {
     val ep = Module(new UARTBridge(uart.c.initBaudRate, freqMHz))
     ep.io.uart.txd := uart.txd
-    uart.txd := ep.io.uart.rxd
+    uart.rxd := ep.io.uart.rxd
     ep.io.clock := clock
     ep.io.reset := reset
     ep
