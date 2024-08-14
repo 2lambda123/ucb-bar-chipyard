@@ -5,7 +5,8 @@ package firesim.firesim
 import chisel3._
 
 import freechips.rocketchip.amba.axi4.{AXI4Bundle, AXI4EdgeParameters}
-import firesim.compat.{NastiIO, AXI4EdgeSummary, AddressSet}
+import firesim.compat.{NastiIO, AXI4EdgeSummary, AddressSet, NastiParameters, CompleteConfig}
+import firesim.lib.{FASEDBridge}
 
 object AXI4EdgeSummaryCreator {
   // Returns max ID reuse; None -> unbounded

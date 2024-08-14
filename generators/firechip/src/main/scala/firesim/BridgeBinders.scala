@@ -13,9 +13,6 @@ import testchipip.serdes.{ExternalSyncPhitIO}
 import testchipip.tsi.{SerialRAM}
 
 import firesim.bridges._
-//import junctions.{NastiKey, NastiParameters}
-//import midas.models.{FASEDBridge, AXI4EdgeSummary, CompleteConfig}
-//import firesim.configs.{MemModelKey}
 
 import chipyard.iocell._
 import chipyard.iobinders._
