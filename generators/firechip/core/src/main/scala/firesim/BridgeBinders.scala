@@ -1,6 +1,6 @@
-//See LICENSE for license details.
+// See LICENSE for license details.
 
-package firesim.firesim
+package firechip.core.firesim
 
 import chisel3._
 
@@ -8,16 +8,18 @@ import org.chipsalliance.cde.config.{Config}
 import freechips.rocketchip.diplomacy.{LazyModule}
 import freechips.rocketchip.subsystem._
 import sifive.blocks.devices.uart._
-
 import testchipip.serdes.{ExternalSyncPhitIO}
 import testchipip.tsi.{SerialRAM}
-
-import firesim.bridges._
 
 import chipyard.iocell._
 import chipyard.iobinders._
 import chipyard._
 import chipyard.harness._
+
+import firechip.core.bridges._
+
+import firesim.lib.bridges.{FASEDBridge}
+import firesim.lib.compat.{CompleteConfig, NastiIO, NastiParameters}
 
 object MainMemoryConsts {
   val regionNamePrefix = "MainMemory"
@@ -108,15 +110,15 @@ class WithBlockDeviceBridge extends HarnessBinder({
 
 class WithFASEDBridge extends HarnessBinder({
   case (th: FireSim, port: AXI4MemPort, chipId: Int) => {
-    implicit val p = firesim.compat.NastiParameters(port.io.bits.r.bits.data.getWidth,
+    val nastiParams = NastiParameters(port.io.bits.r.bits.data.getWidth,
                                    port.io.bits.ar.bits.addr.getWidth,
                                    port.io.bits.ar.bits.id.getWidth)
-    val nastiIo = Wire(new firesim.compat.NastiIO())
+    val nastiIo = Wire(new NastiIO(nastiParams))
     AXI4NastiAssigner.toNasti(nastiIo, port.io.bits)
-    firesim.lib.FASEDBridge(port.io.clock, nastiIo, th.harnessBinderReset.asBool,
-      firesim.compat.CompleteConfig(
-        p,
-        Some(AXI4EdgeSummaryCreator(port.edge)),
+    FASEDBridge(port.io.clock, nastiIo, th.harnessBinderReset.asBool,
+      CompleteConfig(
+        nastiParams,
+        Some(CreateAXI4EdgeSummary(port.edge)),
         Some(MainMemoryConsts.globalName(chipId))))
   }
 })

@@ -1,6 +1,6 @@
-//See LICENSE for license details.
+// See LICENSE for license details.
 
-package firesim.bridges
+package firechip.core.bridges
 
 import org.chipsalliance.cde.config.{Config, Parameters}
 

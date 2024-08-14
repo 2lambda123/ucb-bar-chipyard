@@ -1,5 +1,6 @@
-//See LICENSE for license details.
-package firesim.firesim
+// See LICENSE for license details.
+
+package firechip.test.core.firesim
 
 import scala.collection.mutable.LinkedHashSet
 

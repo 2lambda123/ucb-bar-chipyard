@@ -1,4 +1,6 @@
-package firesim.compat
+// See LICENSE for license details.
+
+package firechip.bridgeinterfaces.compat
 
 import chisel3._
 import chisel3.util._
@@ -78,7 +80,7 @@ class NICIOvonly extends Bundle {
   val pauser = Input(new PauserSettings)
 }
 
-class NICTargetIO extends Bundle {
+class NICBridgeTargetIO extends Bundle {
   val clock = Input(Clock())
   val nic = Flipped(new NICIOvonly)
 }

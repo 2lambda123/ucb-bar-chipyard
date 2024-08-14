@@ -1,14 +1,16 @@
-//See LICENSE for license details
-package firesim.bridges
+// See LICENSE for license details
+
+package firechip.core.bridges
 
 import chisel3._
 
-import firesim.lib._
-import firesim.compat._
+import firesim.lib.bridgeutils._
+
+import firechip.bridgeinterfaces.compat._
 
 class GroundTestBridge extends BlackBox
     with Bridge[HostPortIO[GroundTestBridgeTargetIO]] {
-  val moduleName = "firesim.bridges.GroundTestBridgeModule"
+  val moduleName = "firechip.core.bridges.GroundTestBridgeModule"
   val io = IO(new GroundTestBridgeTargetIO)
   val bridgeIO = HostPort(io)
   val constructorArg = None

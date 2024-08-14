@@ -1,16 +1,19 @@
-//See LICENSE for license details
-package firesim.bridges
+// See LICENSE for license details
+
+package firechip.core.bridges
 
 import chisel3._
 import chisel3.util._
+
 import org.chipsalliance.cde.config.{Parameters}
 
-import firesim.lib._
-import firesim.compat._
+import firesim.lib.bridgeutils._
 
-class NICBridge(implicit p: Parameters) extends BlackBox with Bridge[HostPortIO[NICTargetIO]] {
-  val moduleName = "firesim.bridges.SimpleNICBridgeModule"
-  val io = IO(new NICTargetIO)
+import firechip.bridgeinterfaces.compat._
+
+class NICBridge(implicit p: Parameters) extends BlackBox with Bridge[HostPortIO[NICBridgeTargetIO]] {
+  val moduleName = "firechip.core.bridges.SimpleNICBridgeModule"
+  val io = IO(new NICBridgeTargetIO)
   val bridgeIO = HostPort(io)
   val constructorArg = None
   generateAnnotations()
@@ -20,6 +23,7 @@ class NICBridge(implicit p: Parameters) extends BlackBox with Bridge[HostPortIO[
 object NICBridge {
   def apply(clock: Clock, nicIO: icenet.NICIOvonly)(implicit p: Parameters): NICBridge = {
     val ep = Module(new NICBridge)
+    // TODO: Check following IOs are same size/names/etc
     ep.io.nic <> nicIO
     ep.io.clock := clock
     ep

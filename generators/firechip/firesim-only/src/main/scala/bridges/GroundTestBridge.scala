@@ -1,5 +1,6 @@
-//See LICENSE for license details
-package firesim.bridges
+// See LICENSE for license details
+
+package firechip.firesimonly.bridges
 
 import chisel3._
 

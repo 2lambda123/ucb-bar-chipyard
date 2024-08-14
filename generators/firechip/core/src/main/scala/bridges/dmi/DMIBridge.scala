@@ -1,18 +1,21 @@
 // See LICENSE for license details
-package firesim.bridges
+
+package firechip.core.bridges
 
 import chisel3._
 import chisel3.util._
+
 import org.chipsalliance.cde.config.Parameters
 import freechips.rocketchip.devices.debug.{ClockedDMIIO}
 
-import firesim.lib._
-import firesim.compat._
+import firesim.lib.bridgeutils._
+
+import firechip.bridgeinterfaces.compat._
 
 class DMIBridge(memoryRegionNameOpt: Option[String], addrBits: Int)
     extends BlackBox
     with Bridge[HostPortIO[DMIBridgeTargetIO]] {
-  val moduleName = "firesim.bridges.DMIBridgeModule"
+  val moduleName = "firechip.core.bridges.DMIBridgeModule"
   val io             = IO(new DMIBridgeTargetIO(addrBits))
   val bridgeIO = HostPort(io)
   val constructorArg = Some(DMIBridgeParams(memoryRegionNameOpt, addrBits: Int))
@@ -29,7 +32,7 @@ object DMIBridge {
   )(implicit p:          Parameters
   ): DMIBridge = {
     val ep = Module(new DMIBridge(memoryRegionNameOpt, addrBits))
-    // TODO: add requires here to ensure same size
+    // TODO: Check following IOs are same size/names/etc
     // req into target, resp out of target
     port.dmi.req     <> ep.io.debug.req
     ep.io.debug.resp <> port.dmi.resp

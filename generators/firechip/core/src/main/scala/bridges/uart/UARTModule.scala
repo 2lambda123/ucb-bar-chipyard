@@ -1,6 +1,6 @@
-//See LICENSE for license details.
+// See LICENSE for license details.
 
-package firesim.bridges
+package firechip.core.bridges
 
 import chisel3._
 
@@ -13,4 +13,4 @@ class UARTDUT(implicit val p: Parameters) extends Module {
   ep.io.uart.txd := ep.io.uart.rxd
 }
 
-class UARTModule(implicit p: Parameters) extends firesim.lib.PeekPokeMidasExampleHarness(() => new UARTDUT)
+class UARTModule(implicit p: Parameters) extends firesim.lib.testutils.PeekPokeHarness(() => new UARTDUT)

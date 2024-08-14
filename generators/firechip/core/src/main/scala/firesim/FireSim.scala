@@ -1,6 +1,6 @@
-//See LICENSE for license details.
+// See LICENSE for license details.
 
-package firesim.firesim
+package firechip.core.firesim
 
 import scala.collection.mutable.{LinkedHashMap}
 
@@ -13,12 +13,14 @@ import org.chipsalliance.cde.config.{Field, Parameters}
 import freechips.rocketchip.tile.{RocketTile}
 import boom.v3.common.{BoomTile}
 
-import firesim.lib.{PeekPokeBridge, RationalClockBridge, RationalClock, ResetPulseBridge, ResetPulseBridgeParameters}
-import midas.targetutils.{MemModelAnnotation, EnableModelMultiThreadingAnnotation}
 import chipyard._
 import chipyard.harness._
 import chipyard.iobinders._
 import chipyard.clocking._
+
+import firesim.lib.bridges.{PeekPokeBridge, RationalClockBridge, ResetPulseBridge, ResetPulseBridgeParameters}
+import firesim.lib.bridgeutils.{RationalClock}
+import midas.targetutils.{MemModelAnnotation, EnableModelMultiThreadingAnnotation}
 
 case object FireSimMultiCycleRegFile extends Field[Boolean](false)
 case object FireSimFAME5 extends Field[Boolean](false)

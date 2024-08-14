@@ -1,15 +1,16 @@
-//See LICENSE for license details.
+// See LICENSE for license details.
 
-package firesim.bridges
+package firechip.core.bridges
 
 import chisel3._
 
 import org.chipsalliance.cde.config.{Config, Field, Parameters}
-import firesim.compat._
+
 import midas.targetutils.TriggerSink
 
+import firechip.bridgeinterfaces.compat._
+
 case object TracerVModuleInstrRetireCount extends Field[Int]
-case object TracerVModuleInstructionWidth extends Field[Int](40)
 
 class TracerVModuleInstrRetireCount(n: Int) extends Config((site, here, up) => {
   case TracerVModuleInstrRetireCount => n
@@ -40,4 +41,4 @@ class TracerVDUT(implicit val p: Parameters) extends Module {
   TriggerSink(io.triggerSink)
 }
 
-class TracerVModule(implicit p: Parameters) extends firesim.lib.PeekPokeMidasExampleHarness(() => new TracerVDUT)
+class TracerVModule(implicit p: Parameters) extends firesim.lib.testutils.PeekPokeHarness(() => new TracerVDUT)

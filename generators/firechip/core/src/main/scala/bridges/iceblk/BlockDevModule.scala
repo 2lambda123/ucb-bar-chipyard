@@ -1,19 +1,23 @@
-//See LICENSE for license details.
+// See LICENSE for license details.
 
-package firesim.bridges
+package firechip.core.bridges
 
 import chisel3._
 import chisel3.util._
 
 import org.chipsalliance.cde.config.Parameters
 
+import firechip.bridgeinterfaces.compat._
+
 class BlockDevDUT(implicit val p: Parameters) extends Module {
-  val rd = Module(new BlockDevBridge(firesim.compat.BlockDeviceConfig(nTrackers=1)))
+  val params = BlockDeviceConfig(nTrackers=1)
+
+  val rd = Module(new BlockDevBridge(params))
   rd.io.clock := clock
   rd.io.reset := reset
   val rdev = rd.io.bdev
 
-  val wr = Module(new BlockDevBridge(firesim.compat.BlockDeviceConfig(nTrackers=1)))
+  val wr = Module(new BlockDevBridge(params))
   wr.io.clock := clock
   wr.io.reset := reset
   val wdev = wr.io.bdev
@@ -64,4 +68,4 @@ class BlockDevDUT(implicit val p: Parameters) extends Module {
   }
 }
 
-class BlockDevModule(implicit p: Parameters) extends firesim.lib.PeekPokeMidasExampleHarness(() => new BlockDevDUT)
+class BlockDevModule(implicit p: Parameters) extends firesim.lib.testutils.PeekPokeHarness(() => new BlockDevDUT)

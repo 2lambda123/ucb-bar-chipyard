@@ -1,19 +1,20 @@
-//See LICENSE for license details
-package firesim.bridges
+// See LICENSE for license details
+
+package firechip.core.bridges
 
 import chisel3._
-import chisel3.util._
 
-import firesim.lib._
-import firesim.compat._
+import firesim.lib.bridgeutils._
+
+import firechip.bridgeinterfaces.compat._
 
 /** Blackbox that is instantiated in the target
   */
 class CospikeBridge(params: CospikeBridgeParams)
     extends BlackBox
-    with Bridge[HostPortIO[CospikeTargetIO]] {
-  val moduleName = "firesim.bridges.CospikeBridgeModule"
-  val io       = IO(new CospikeTargetIO(params.widths))
+    with Bridge[HostPortIO[CospikeBridgeTargetIO]] {
+  val moduleName = "firechip.core.bridges.CospikeBridgeModule"
+  val io       = IO(new CospikeBridgeTargetIO(params.widths))
   val bridgeIO = HostPort(io)
 
   // give the Cospike params to the GG module
@@ -23,7 +24,7 @@ class CospikeBridge(params: CospikeBridgeParams)
   generateAnnotations()
 }
 
-object FireSimSpikeCosimConfig {
+object ConvertSpikeCosimConfig {
   def apply(widths: testchipip.cosim.SpikeCosimConfig): SpikeCosimConfig = {
     SpikeCosimConfig(
       isa = widths.isa,
@@ -47,7 +48,10 @@ object FireSimSpikeCosimConfig {
   */
 object CospikeBridge {
   def apply(tracedInsns: testchipip.cosim.TileTraceIO, hartid: Int, cfg: testchipip.cosim.SpikeCosimConfig) = {
-    val params = new CospikeBridgeParams(FireSimTraceBundleWidths(tracedInsns.traceBundleWidths), hartid, FireSimSpikeCosimConfig(cfg))
+    val params = new CospikeBridgeParams(
+      ConvertTraceBundleWidths(tracedInsns.traceBundleWidths),
+      hartid,
+      ConvertSpikeCosimConfig(cfg))
     val cosim  = withClockAndReset(tracedInsns.clock, tracedInsns.reset) {
       Module(new CospikeBridge(params))
     }
@@ -55,7 +59,7 @@ object CospikeBridge {
       t       := DontCare
       t.valid := false.B
     })
-    cosim.io.tiletrace <> FireSimTileTraceIO(tracedInsns)
+    cosim.io.tiletrace <> ConvertTileTraceIO(tracedInsns)
     cosim
   }
 }

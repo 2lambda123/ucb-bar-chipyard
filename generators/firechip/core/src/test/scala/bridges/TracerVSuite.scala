@@ -1,6 +1,6 @@
-//See LICENSE for license details.
+// See LICENSE for license details.
 
-package firesim.bridges
+package firechip.test.core.bridges
 
 import java.io._
 

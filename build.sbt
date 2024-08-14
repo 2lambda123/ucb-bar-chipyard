@@ -361,16 +361,6 @@ lazy val firechip_bridge_interfaces = (project in file("generators/firechip/brid
     commonSettings,
   )
 
-// FireSim-side of target-specific bridges.
-// Re-uses definitions/etc provided in FireSim's midas project.
-// This is copied to FireSim's midas compiler.
-lazy val firechip_firesim_only = (project in file("generators/firechip/firesim-only"))
-  .dependsOn(firechip_bridge_interfaces)
-  .settings(
-    chiselSettings,
-    commonSettings,
-  )
-
 // FireSim top-level project.
 // Includes, FireSim harness, target-specific bridges, etc.
 // It's tests also depend on firesim_lib's test sources.

@@ -1,16 +1,17 @@
-//See LICENSE for license details
-package firesim.bridges
+// See LICENSE for license details
+
+package firechip.core.bridges
 
 import chisel3._
 import chisel3.util._
+
 import org.chipsalliance.cde.config.Parameters
 import freechips.rocketchip.util._
 
-//import testchipip.cosim.{SerializableTileTraceIO, TileTraceIO, TraceBundleWidths}
-
 import midas.targetutils.TriggerSource
-import firesim.lib._
-import firesim.compat._
+import firesim.lib.bridgeutils._
+
+import firechip.bridgeinterfaces.compat._
 
 /** Target-side module for the TracerV Bridge.
   *
@@ -25,10 +26,10 @@ import firesim.compat._
   */
 class TracerVBridge(widths: TraceBundleWidths)
     extends BlackBox
-    with Bridge[HostPortIO[TracerVTargetIO]] {
+    with Bridge[HostPortIO[TracerVBridgeTargetIO]] {
   require(widths.retireWidth > 0, "TracerVBridge: number of instructions must be larger than 0")
-  val moduleName = "firesim.bridges.TracerVBridgeModule"
-  val io                                 = IO(new TracerVTargetIO(widths))
+  val moduleName = "firechip.core.bridges.TracerVBridgeModule"
+  val io                                 = IO(new TracerVBridgeTargetIO(widths))
   val bridgeIO = HostPort(io)
   val constructorArg                     = Some(widths)
   generateAnnotations()
@@ -52,40 +53,6 @@ class TracerVBridge(widths: TraceBundleWidths)
   override def desiredName = super.desiredName + defnameSuffix
 }
 
-object FireSimTraceBundleWidths {
-  def apply(widths: testchipip.cosim.TraceBundleWidths): TraceBundleWidths = {
-    TraceBundleWidths(
-      retireWidth = widths.retireWidth,
-      iaddrWidth = widths.iaddr,
-      insnWidth = widths.insn,
-      wdataWidth = widths.wdata,
-      causeWidth = widths.cause,
-      tvalWidth = widths.tval,
-    )
-  }
-}
-
-object FireSimTileTraceIO {
-  def apply(tiletrace: testchipip.cosim.TileTraceIO): TileTraceIO = {
-    val ttw = Wire(new TileTraceIO(FireSimTraceBundleWidths(tiletrace.traceBundleWidths)))
-    ttw.clock := tiletrace.clock
-    ttw.reset := tiletrace.reset
-    ttw.trace.retiredinsns.zip(tiletrace.trace.insns).map{ case (l, r) =>
-      l.valid := r.valid
-      l.iaddr := r.iaddr
-      l.insn := r.insn
-      l.wdata.zip(r.wdata).map { case (l, r) => l := r }
-      l.priv := r.priv
-      l.exception := r.exception
-      l.interrupt := r.interrupt
-      l.cause := r.cause
-      l.tval := r.tval
-    }
-    ttw.trace.time := tiletrace.trace.time
-    ttw
-  }
-}
-
 object TracerVBridge {
   def apply(widths: TraceBundleWidths)(implicit p: Parameters): TracerVBridge = {
     val tracerv = Module(new TracerVBridge(widths))
@@ -96,14 +63,14 @@ object TracerVBridge {
   }
 
   def apply(widths: testchipip.cosim.TraceBundleWidths)(implicit p: Parameters): TracerVBridge = {
-    TracerVBridge(FireSimTraceBundleWidths(widths))
+    TracerVBridge(ConvertTraceBundleWidths(widths))
   }
 
   def apply(tracedInsns: testchipip.cosim.TileTraceIO)(implicit p: Parameters): TracerVBridge = {
     val tracerv = withClockAndReset(tracedInsns.clock, tracedInsns.reset) {
       TracerVBridge(tracedInsns.traceBundleWidths)
     }
-    tracerv.io.tiletrace <> FireSimTileTraceIO(tracedInsns)
+    tracerv.io.tiletrace <> ConvertTileTraceIO(tracedInsns)
     tracerv
   }
 }

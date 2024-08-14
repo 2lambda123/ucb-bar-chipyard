@@ -1,4 +1,6 @@
-package firesim.compat
+// See LICENSE for license details.
+
+package firechip.bridgeinterfaces.compat
 
 import chisel3._
 import chisel3.util.{Decoupled}
@@ -16,11 +18,6 @@ case class TSIBridgeParams(memoryRegionNameOpt: Option[String])
 class SerialIO(val w: Int) extends Bundle {
   val in = Flipped(Decoupled(UInt(w.W)))
   val out = Decoupled(UInt(w.W))
-
-  def flipConnect(other: SerialIO) {
-    in <> other.out
-    other.in <> out
-  }
 }
 
 object TSI {

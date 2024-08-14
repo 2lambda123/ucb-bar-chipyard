@@ -1,6 +1,6 @@
 // See LICENSE for license details.
 
-package firesim.firesim
+package firechip.test.core.firesim
 
 import java.io.File
 

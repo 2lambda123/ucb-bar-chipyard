@@ -1,13 +1,15 @@
-//See LICENSE for license details
-package firesim.bridges
+// See LICENSE for license details
+
+package firechip.core.bridges
 
 import chisel3._
 import chisel3.util._
+
 import org.chipsalliance.cde.config.Parameters
 
-import firesim.lib._
-import firesim.compat._
+import firesim.lib.bridgeutils._
 
+import firechip.bridgeinterfaces.compat._
 
 // Note: This file is heavily commented as it serves as a bridge walkthrough
 // example in the FireSim docs
@@ -16,7 +18,7 @@ import firesim.compat._
 class UARTBridge(initBaudRate: BigInt, freqMHz: Int)(implicit p: Parameters) extends BlackBox
     with Bridge[HostPortIO[UARTBridgeTargetIO]] {
   // Module portion corresponding to this bridge
-  val moduleName = "firesim.bridges.UARTBridgeModule"
+  val moduleName = "firechip.core.bridges.UARTBridgeModule"
   // Since we're extending BlackBox this is the port will connect to in our target's RTL
   val io = IO(new UARTBridgeTargetIO)
   // Implement the bridgeIO member of Bridge using HostPort. This indicates that

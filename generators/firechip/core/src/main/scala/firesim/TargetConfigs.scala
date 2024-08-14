@@ -1,4 +1,6 @@
-package firesim.firesim
+// See LICENSE for license details.
+
+package firechip.core.firesim
 
 import java.io.File
 
@@ -13,12 +15,10 @@ import freechips.rocketchip.devices.tilelink.{BootROMLocated}
 import freechips.rocketchip.devices.debug.{DebugModuleKey}
 import freechips.rocketchip.prci.{AsynchronousCrossing}
 import testchipip.cosim.{TracePortKey}
+import icenet._
 
 import chipyard.clocking.{ChipyardPRCIControlKey}
 import chipyard.harness.{HarnessClockInstantiatorKey}
-import icenet._
-
-import firesim.bridges._
 
 class WithBootROM extends Config((site, here, up) => {
   case BootROMLocated(x) => {
@@ -344,7 +344,7 @@ class FireSimLeanGemminiRocketMMIOOnlyConfig extends Config(
   new chipyard.LeanGemminiRocketConfig)
 
 class FireSimLargeBoomCospikeConfig extends Config(
-  new firesim.firesim.WithCospikeBridge ++
+  new WithCospikeBridge ++
   new WithDefaultFireSimBridges ++
   new WithFireSimConfigTweaks++
   new chipyard.LargeBoomV3Config)
@@ -356,7 +356,7 @@ class FireSimQuadRocketSbusRingNoCConfig extends Config(
   new chipyard.QuadRocketSbusRingNoCConfig)
 
 class FireSimLargeBoomSV39CospikeConfig extends Config(
-  new firesim.firesim.WithCospikeBridge ++
+  new WithCospikeBridge ++
   new WithDefaultFireSimBridges ++
   new WithFireSimConfigTweaks++
   new freechips.rocketchip.rocket.WithSV39 ++

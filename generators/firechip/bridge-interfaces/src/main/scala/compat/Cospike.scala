@@ -1,4 +1,6 @@
-package firesim.compat
+// See LICENSE for license details.
+
+package firechip.bridgeinterfaces.compat
 
 import chisel3._
 
@@ -24,6 +26,6 @@ case class CospikeBridgeParams(
   cfg:    SpikeCosimConfig,
 )
 
-class CospikeTargetIO(widths: TraceBundleWidths) extends Bundle {
+class CospikeBridgeTargetIO(widths: TraceBundleWidths) extends Bundle {
   val tiletrace = Input(new TileTraceIO(widths))
 }

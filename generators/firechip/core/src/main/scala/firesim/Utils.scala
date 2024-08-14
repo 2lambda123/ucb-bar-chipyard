@@ -1,14 +1,15 @@
-//See LICENSE for license details.
+// See LICENSE for license details.
 
-package firesim.firesim
+package firechip.core.firesim
 
 import chisel3._
 
 import freechips.rocketchip.amba.axi4.{AXI4Bundle, AXI4EdgeParameters}
-import firesim.compat.{NastiIO, AXI4EdgeSummary, AddressSet, NastiParameters, CompleteConfig}
-import firesim.lib.{FASEDBridge}
 
-object AXI4EdgeSummaryCreator {
+import firesim.lib.compat.{CompleteConfig, NastiIO, NastiParameters, AXI4EdgeSummary, AddressSet}
+
+// Chipyard's RC version of AXI4EdgeParameters to AXI4EdgeSummary
+object CreateAXI4EdgeSummary {
   // Returns max ID reuse; None -> unbounded
   private def getIDReuseFromEdge(e: AXI4EdgeParameters): Option[Int] = {
     val maxFlightPerMaster = e.master.masters.map(_.maxFlight)
@@ -46,9 +47,10 @@ object AXI4EdgeSummaryCreator {
   }
 }
 
-// Copied from FireSim. Chipyard's RC version of AXI4Bundle to Nasti
+// Chipyard's RC version of AXI4Bundle to/from NastiIO
 object AXI4NastiAssigner {
   def toNasti(nasti: NastiIO, axi4: AXI4Bundle): Unit = {
+    // TODO: The following should ensure sizes are equivalent.
     // HACK: Nasti and Diplomatic have diverged to the point where it's no
     // longer safe to emit a partial connect leaf fields. Onus is on the
     // invoker to check widths.

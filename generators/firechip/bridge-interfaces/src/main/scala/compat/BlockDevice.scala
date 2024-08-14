@@ -1,8 +1,11 @@
-package firesim.compat
+// See LICENSE for license details.
+
+package firechip.bridgeinterfaces.compat
+
+import scala.math.max
 
 import chisel3._
 import chisel3.util._
-import scala.math.max
 
 case class BlockDeviceConfig(
   nTrackers: Int = 1
