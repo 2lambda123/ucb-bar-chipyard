@@ -26,4 +26,4 @@ TARGET_SOURCE_DIRS :=
 # Only used in this projects makefrags
 makefile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
 makefile_dir := $(patsubst %/,%,$(dir $(makefile_path)))
-chipyard_dir := $(abspath $(makefile_dir)/../../../../../..)
+chipyard_dir := $(abspath $(makefile_dir)/../../../../../../..)

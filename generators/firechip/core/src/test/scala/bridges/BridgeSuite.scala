@@ -21,7 +21,7 @@ abstract class BridgeSuite(
     with Matchers {
 
   val chipyardDir = new File(System.getProperty("user.dir"))
-  override val extraMakeArgs = Seq(s"TARGET_PROJECT_MAKEFRAG=$chipyardDir/generators/firechip/src/main/makefrag/bridges")
+  override val extraMakeArgs = Seq(s"TARGET_PROJECT_MAKEFRAG=$chipyardDir/generators/firechip/core/src/main/makefrag/bridges")
 
   /** Helper to generate tests strings.
     */

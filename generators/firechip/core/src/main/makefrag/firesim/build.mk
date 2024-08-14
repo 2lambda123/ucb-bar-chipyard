@@ -10,8 +10,8 @@ CHIPYARD_STAGING_DIR := $(chipyard_dir)/sims/firesim-staging
 copy_firesim_files:
 	# only copies if updated (also deletes all non-matching files)
 	rsync -pthrvza --delete \
-		$(chipyard_dir)/generators/firechip-bridge-interfaces/src/main/scala/* \
-		$(chipyard_dir)/generators/firechip-firesim-only/src/main/scala/* \
+		$(chipyard_dir)/generators/firechip/bridge-interfaces/src/main/scala/* \
+		$(chipyard_dir)/generators/firechip/firesim-only/src/main/scala/* \
 		$(firesim_base_dir)/midas/src/main/scala/targetcopied
 
 # this rule always is run, but may not update the timestamp of the targets (depending on what the Chipyard make does).
@@ -35,3 +35,32 @@ $(FIRRTL_FILE) $(ANNO_FILE) &: force_rule_to_run copy_firesim_files
 	# only copies if updated
 	rsync -pthrvz $(CHIPYARD_STAGING_DIR)/generated-src/$(long_name)/$(long_name).fir $(FIRRTL_FILE)
 	rsync -pthrvz $(CHIPYARD_STAGING_DIR)/generated-src/$(long_name)/$(long_name).anno.json $(ANNO_FILE)
+	# .d needed to run metasim CI tests
+	rsync -pthrvz $(CHIPYARD_STAGING_DIR)/generated-src/$(long_name)/$(long_name).d $(GENERATED_DIR)/$(long_name).d
+
+#######################################
+# Setup Extra Verilator Compile Flags #
+#######################################
+
+## default flags added for cva6
+CVA6_VERILATOR_FLAGS = \
+	--unroll-count 256 \
+	-Werror-PINMISSING \
+	-Werror-IMPLICIT \
+	-Wno-fatal \
+	-Wno-PINCONNECTEMPTY \
+	-Wno-ASSIGNDLY \
+	-Wno-DECLFILENAME \
+	-Wno-UNUSED \
+	-Wno-UNOPTFLAT \
+	-Wno-BLKANDNBLK \
+	-Wno-style \
+	-Wall
+
+# normal flags used for midas builds (that are incompatible with cva6)
+DEFAULT_MIDAS_VERILATOR_FLAGS = \
+	--assert
+
+# AJG: this must be evaluated after verilog generation to work (hence the =)
+EXTRA_VERILATOR_FLAGS = \
+	$(shell if ! grep -iq "module.*cva6" $(simulator_verilog); then echo "$(DEFAULT_MIDAS_VERILATOR_FLAGS)"; else echo "$(CVA6_VERILATOR_FLAGS)"; fi)
