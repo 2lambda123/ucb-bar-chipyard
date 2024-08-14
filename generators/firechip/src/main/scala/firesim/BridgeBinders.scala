@@ -3,28 +3,19 @@
 package firesim.firesim
 
 import chisel3._
-import chisel3.experimental.{DataMirror, Direction}
-import chisel3.util.experimental.BoringUtils
 
-import org.chipsalliance.cde.config.{Field, Config, Parameters}
+import org.chipsalliance.cde.config.{Config}
 import freechips.rocketchip.diplomacy.{LazyModule}
-import freechips.rocketchip.devices.debug.{Debug, HasPeripheryDebug, ExportDebug, DMI}
-import freechips.rocketchip.amba.axi4.{AXI4Bundle}
 import freechips.rocketchip.subsystem._
-import freechips.rocketchip.prci.{ClockBundle, ClockBundleParameters}
-import freechips.rocketchip.util.{ResetCatchAndSync}
 import sifive.blocks.devices.uart._
 
 import testchipip.serdes.{ExternalSyncPhitIO}
 import testchipip.tsi.{SerialRAM}
-import icenet.{CanHavePeripheryIceNIC, SimNetwork, NicLoopback, NICKey, NICIOvonly}
 
+import firesim.bridges._
 //import junctions.{NastiKey, NastiParameters}
 //import midas.models.{FASEDBridge, AXI4EdgeSummary, CompleteConfig}
-import firesim.bridges._
-//import firesim.configs.MemModelKey
-import tracegen.{TraceGenSystemModuleImp}
-import cva6.CVA6Tile
+//import firesim.configs.{MemModelKey}
 
 import chipyard.iocell._
 import chipyard.iobinders._
@@ -120,14 +111,16 @@ class WithBlockDeviceBridge extends HarnessBinder({
 
 class WithFASEDBridge extends HarnessBinder({
   case (th: FireSim, port: AXI4MemPort, chipId: Int) => {
-    //val nastiKey = NastiParameters(port.io.bits.r.bits.data.getWidth,
-    //                               port.io.bits.ar.bits.addr.getWidth,
-    //                               port.io.bits.ar.bits.id.getWidth)
-    //FASEDBridge(port.io.clock, port.io.bits, th.harnessBinderReset.asBool,
-    //  CompleteConfig(th.p(firesim.configs.MemModelKey),
-    //    nastiKey,
-    //    Some(AXI4EdgeSummary(port.edge)),
-    //    Some(MainMemoryConsts.globalName(chipId))))(th.p)
+    implicit val p = firesim.compat.NastiParameters(port.io.bits.r.bits.data.getWidth,
+                                   port.io.bits.ar.bits.addr.getWidth,
+                                   port.io.bits.ar.bits.id.getWidth)
+    val nastiIo = Wire(new firesim.compat.NastiIO())
+    AXI4NastiAssigner.toNasti(nastiIo, port.io.bits)
+    firesim.lib.FASEDBridge(port.io.clock, nastiIo, th.harnessBinderReset.asBool,
+      firesim.compat.CompleteConfig(
+        p,
+        Some(AXI4EdgeSummaryCreator(port.edge)),
+        Some(MainMemoryConsts.globalName(chipId))))
   }
 })
 

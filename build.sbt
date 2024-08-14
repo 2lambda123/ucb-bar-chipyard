@@ -343,30 +343,39 @@ lazy val midas_standalone_target_utils = (project in file("tools/midas-targetuti
   .settings(chiselSettings)
 // TODO: AJG: ^ Fix
 
-// Provides API for bridges to be created in the target
+// Provides API for bridges to be created in the target.
+// Includes target-side of FireSim-provided bridges and their interfaces that are shared
+// between FireSim and the target. Minimal in scope (should only depend on Chisel/Firrtl2)
 lazy val firesim_lib = (project in firesimDir / "sim/firesim-lib")
   .dependsOn(midas_target_utils)
   .settings(commonSettings)
   .settings(chiselSettings)
   .settings(scalaTestSettings)
 
-// TODO: rename... simulation boundary or something like that
-lazy val firechip_isolated = (project in file("generators/firechip-isolated"))
+// Interfaces for target-specific bridges shared with FireSim.
+// Minimal in scope (should only depend on Chisel/Firrtl2).
+// This is copied to FireSim's midas compiler.
+lazy val firechip_bridge_interfaces = (project in file("generators/firechip-bridge-interfaces"))
   .settings(
     chiselSettings,
     commonSettings,
   )
 
+// FireSim-side of target-specific bridges.
+// Re-uses definitions/etc provided in FireSim's midas project.
+// This is copied to FireSim's midas compiler.
 lazy val firechip_firesim_only = (project in file("generators/firechip-firesim-only"))
-  .dependsOn(firechip_isolated)
+  .dependsOn(firechip_bridge_interfaces)
   .settings(
     chiselSettings,
     commonSettings,
   )
 
-// ensure this test area is dependent also on firesim_lib's test area
+// FireSim top-level project.
+// Includes, FireSim harness, target-specific bridges, etc.
+// It's tests also depend on firesim_lib's test sources.
 lazy val firechip = (project in file("generators/firechip"))
-  .dependsOn(chipyard, firesim_lib % "compile->compile;test->test", firechip_isolated)
+  .dependsOn(chipyard, firesim_lib % "compile->compile;test->test", firechip_bridge_interfaces)
   .settings(
     chiselSettings,
     commonSettings,

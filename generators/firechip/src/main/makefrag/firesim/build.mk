@@ -10,7 +10,7 @@ CHIPYARD_STAGING_DIR := $(chipyard_dir)/sims/firesim-staging
 copy_firesim_files:
 	# only copies if updated (also deletes all non-matching files)
 	rsync -pthrvza --delete \
-		$(chipyard_dir)/generators/firechip-isolated/src/main/scala/* \
+		$(chipyard_dir)/generators/firechip-bridge-interfaces/src/main/scala/* \
 		$(chipyard_dir)/generators/firechip-firesim-only/src/main/scala/* \
 		$(firesim_base_dir)/midas/src/main/scala/targetcopied
 
