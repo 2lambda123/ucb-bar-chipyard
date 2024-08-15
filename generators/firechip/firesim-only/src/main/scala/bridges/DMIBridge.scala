@@ -2,14 +2,15 @@
 
 package firechip.firesimonly.bridges
 
-import midas.widgets._
-
 import chisel3._
 import chisel3.util._
+
 import org.chipsalliance.cde.config.Parameters
 
-import firesim.lib._
-import firesim.compat._
+import midas.widgets._
+import firesim.lib.bridgeutils._
+
+import firechip.bridgeinterfaces.compat._
 
 class DMIBridgeModule(dmiBridgeParams: DMIBridgeParams)(implicit p: Parameters)
     extends BridgeModule[HostPortIO[DMIBridgeTargetIO]]()(p) {

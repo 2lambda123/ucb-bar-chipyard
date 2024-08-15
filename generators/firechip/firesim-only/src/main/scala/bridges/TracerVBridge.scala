@@ -4,16 +4,18 @@ package firechip.firesimonly.bridges
 
 import chisel3._
 import chisel3.util._
+
 import org.chipsalliance.cde.config.Parameters
 import freechips.rocketchip.util._
 
 import midas.targetutils.TriggerSource
 import midas.widgets._
-import firesim.lib._
-import firesim.compat._
+import firesim.lib.bridgeutils._
+
+import firechip.bridgeinterfaces.compat._
 
 class TracerVBridgeModule(key: TraceBundleWidths)(implicit p: Parameters)
-    extends BridgeModule[HostPortIO[TracerVTargetIO]]()(p)
+    extends BridgeModule[HostPortIO[TracerVBridgeTargetIO]]()(p)
     with StreamToHostCPU {
 
   // StreamToHostCPU  mixin parameters
@@ -22,7 +24,7 @@ class TracerVBridgeModule(key: TraceBundleWidths)(implicit p: Parameters)
 
   lazy val module = new BridgeModuleImp(this) {
     val io    = IO(new WidgetIO)
-    val hPort = IO(HostPort(new TracerVTargetIO(key)))
+    val hPort = IO(HostPort(new TracerVBridgeTargetIO(key)))
 
     // Mask off valid committed instructions when under reset
     val traces            = hPort.hBits.tiletrace.trace.retiredinsns.map({ unmasked =>

@@ -4,12 +4,14 @@ package firechip.firesimonly.bridges
 
 import chisel3._
 import chisel3.util._
+
 import org.chipsalliance.cde.config.{Parameters, Field}
 import freechips.rocketchip.util._
 
 import midas.widgets._
-import firesim.lib._
-import firesim.compat._
+import firesim.lib.bridgeutils._
+
+import firechip.bridgeinterfaces.compat._
 
 object TokenQueueConsts {
   val TOKENS_PER_BIG_TOKEN = 7
@@ -156,7 +158,7 @@ class HostToNICTokenGenerator(nTokens: Int)(implicit p: Parameters) extends Modu
 }
 
 class SimpleNICBridgeModule(implicit p: Parameters)
-    extends BridgeModule[HostPortIO[NICTargetIO]]()(p)
+    extends BridgeModule[HostPortIO[NICBridgeTargetIO]]()(p)
     with StreamToHostCPU
     with StreamFromHostCPU {
   // Stream mixin parameters
@@ -165,7 +167,7 @@ class SimpleNICBridgeModule(implicit p: Parameters)
 
   lazy val module = new BridgeModuleImp(this) {
     val io = IO(new WidgetIO)
-    val hPort = IO(HostPort(new NICTargetIO))
+    val hPort = IO(HostPort(new NICBridgeTargetIO))
 
     val htnt_queue = Module(new Queue(new HostToNICToken, 10))
     val ntht_queue = Module(new Queue(new NICToHostToken, 10))

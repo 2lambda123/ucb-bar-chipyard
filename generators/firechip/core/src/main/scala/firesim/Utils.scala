@@ -6,7 +6,8 @@ import chisel3._
 
 import freechips.rocketchip.amba.axi4.{AXI4Bundle, AXI4EdgeParameters}
 
-import firesim.lib.compat.{CompleteConfig, NastiIO, NastiParameters, AXI4EdgeSummary, AddressSet}
+import firesim.lib.bridges.{AXI4EdgeSummary, AddressSet}
+import firesim.lib.nasti.{NastiIO, NastiParameters}
 
 // Chipyard's RC version of AXI4EdgeParameters to AXI4EdgeSummary
 object CreateAXI4EdgeSummary {

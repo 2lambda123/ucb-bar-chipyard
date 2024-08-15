@@ -18,8 +18,8 @@ import chipyard.harness._
 
 import firechip.core.bridges._
 
-import firesim.lib.bridges.{FASEDBridge}
-import firesim.lib.compat.{CompleteConfig, NastiIO, NastiParameters}
+import firesim.lib.bridges.{FASEDBridge, CompleteConfig}
+import firesim.lib.nasti.{NastiIO, NastiParameters}
 
 object MainMemoryConsts {
   val regionNamePrefix = "MainMemory"

@@ -4,13 +4,15 @@ package firechip.firesimonly.bridges
 
 import chisel3._
 import chisel3.util._
+
 import org.chipsalliance.cde.config.Parameters
 import freechips.rocketchip.util.DecoupledHelper
 
 import midas.widgets._
 import midas.models.DynamicLatencyPipe
-import firesim.lib._
-import firesim.compat._
+import firesim.lib.bridgeutils._
+
+import firechip.bridgeinterfaces.compat._
 
 class BlockDevBridgeModule(blockDevExternal: BlockDeviceConfig)(implicit p: Parameters)
 extends BridgeModule[HostPortIO[BlockDevBridgeTargetIO]]()(p) {

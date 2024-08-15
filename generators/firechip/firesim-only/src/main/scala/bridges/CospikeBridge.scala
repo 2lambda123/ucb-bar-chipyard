@@ -4,12 +4,14 @@ package firechip.firesimonly.bridges
 
 import chisel3._
 import chisel3.util._
+
 import org.chipsalliance.cde.config.Parameters
 import freechips.rocketchip.util.DecoupledHelper
 
 import midas.widgets._
-import firesim.lib._
-import firesim.compat._
+import firesim.lib.bridgeutils._
+
+import firechip.bridgeinterfaces.compat._
 
 //*************************************************
 //* GOLDEN GATE MODULE
@@ -17,7 +19,7 @@ import firesim.compat._
 //*************************************************
 
 class CospikeBridgeModule(params: CospikeBridgeParams)(implicit p: Parameters)
-    extends BridgeModule[HostPortIO[CospikeTargetIO]]()(p)
+    extends BridgeModule[HostPortIO[CospikeBridgeTargetIO]]()(p)
     with StreamToHostCPU {
   // CONSTANTS: DMA Parameters
   val toHostCPUQueueDepth = 6144
@@ -26,7 +28,7 @@ class CospikeBridgeModule(params: CospikeBridgeParams)(implicit p: Parameters)
 
     // setup io
     val io    = IO(new WidgetIO)
-    val hPort = IO(HostPort(new CospikeTargetIO(params.widths)))
+    val hPort = IO(HostPort(new CospikeBridgeTargetIO(params.widths)))
 
     // helper to get number to round up to nearest multiple
     def roundUp(num: Int, mult: Int): Int = { (num.toFloat / mult).ceil.toInt * mult }

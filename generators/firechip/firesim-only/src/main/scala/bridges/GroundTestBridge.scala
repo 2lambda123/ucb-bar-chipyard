@@ -7,8 +7,9 @@ import chisel3._
 import org.chipsalliance.cde.config.Parameters
 
 import midas.widgets._
-import firesim.lib._
-import firesim.compat._
+import firesim.lib.bridgeutils._
+
+import firechip.bridgeinterfaces.compat._
 
 class GroundTestBridgeModule()(implicit p: Parameters) extends BridgeModule[HostPortIO[GroundTestBridgeTargetIO]]()(p) {
   lazy val module = new BridgeModuleImp(this) {

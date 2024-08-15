@@ -4,15 +4,16 @@ package firechip.firesimonly.bridges
 
 import chisel3._
 import chisel3.util._
+
 import org.chipsalliance.cde.config.Parameters
 
 import midas.widgets._
-import firesim.lib._
-import firesim.compat._
+import firesim.lib.bridgeutils._
+
+import firechip.bridgeinterfaces.compat._
 
 //Note: This file is heavily commented as it serves as a bridge walkthrough
 //example in the FireSim docs
-
 
 // DOC include start: UART Bridge Header
 // Our UARTBridgeModule definition, note:
