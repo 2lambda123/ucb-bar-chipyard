@@ -10,7 +10,7 @@ import firechip.bridgeinterfaces.compat._
 
 class GroundTestBridge extends BlackBox
     with Bridge[HostPortIO[GroundTestBridgeTargetIO]] {
-  val moduleName = "firechip.core.bridges.GroundTestBridgeModule"
+  val moduleName = "firechip.firesimonly.bridges.GroundTestBridgeModule"
   val io = IO(new GroundTestBridgeTargetIO)
   val bridgeIO = HostPort(io)
   val constructorArg = None

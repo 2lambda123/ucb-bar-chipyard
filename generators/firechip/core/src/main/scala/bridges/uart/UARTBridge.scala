@@ -18,7 +18,7 @@ import firechip.bridgeinterfaces.compat._
 class UARTBridge(initBaudRate: BigInt, freqMHz: Int)(implicit p: Parameters) extends BlackBox
     with Bridge[HostPortIO[UARTBridgeTargetIO]] {
   // Module portion corresponding to this bridge
-  val moduleName = "firechip.core.bridges.UARTBridgeModule"
+  val moduleName = "firechip.firesimonly.bridges.UARTBridgeModule"
   // Since we're extending BlackBox this is the port will connect to in our target's RTL
   val io = IO(new UARTBridgeTargetIO)
   // Implement the bridgeIO member of Bridge using HostPort. This indicates that

@@ -28,7 +28,7 @@ class TracerVBridge(widths: TraceBundleWidths)
     extends BlackBox
     with Bridge[HostPortIO[TracerVBridgeTargetIO]] {
   require(widths.retireWidth > 0, "TracerVBridge: number of instructions must be larger than 0")
-  val moduleName = "firechip.core.bridges.TracerVBridgeModule"
+  val moduleName = "firechip.firesimonly.bridges.TracerVBridgeModule"
   val io                                 = IO(new TracerVBridgeTargetIO(widths))
   val bridgeIO = HostPort(io)
   val constructorArg                     = Some(widths)

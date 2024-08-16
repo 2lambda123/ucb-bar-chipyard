@@ -15,7 +15,7 @@ import firechip.bridgeinterfaces.compat._
 class DMIBridge(memoryRegionNameOpt: Option[String], addrBits: Int)
     extends BlackBox
     with Bridge[HostPortIO[DMIBridgeTargetIO]] {
-  val moduleName = "firechip.core.bridges.DMIBridgeModule"
+  val moduleName = "firechip.firesimonly.bridges.DMIBridgeModule"
   val io             = IO(new DMIBridgeTargetIO(addrBits))
   val bridgeIO = HostPort(io)
   val constructorArg = Some(DMIBridgeParams(memoryRegionNameOpt, addrBits: Int))

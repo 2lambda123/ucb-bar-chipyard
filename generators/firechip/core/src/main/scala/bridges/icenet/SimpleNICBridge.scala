@@ -12,7 +12,7 @@ import firesim.lib.bridgeutils._
 import firechip.bridgeinterfaces.compat._
 
 class NICBridge(implicit p: Parameters) extends BlackBox with Bridge[HostPortIO[NICBridgeTargetIO]] {
-  val moduleName = "firechip.core.bridges.SimpleNICBridgeModule"
+  val moduleName = "firechip.firesimonly.bridges.SimpleNICBridgeModule"
   val io = IO(new NICBridgeTargetIO)
   val bridgeIO = HostPort(io)
   val constructorArg = None

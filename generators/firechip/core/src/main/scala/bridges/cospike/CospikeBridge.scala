@@ -13,7 +13,7 @@ import firechip.bridgeinterfaces.compat._
 class CospikeBridge(params: CospikeBridgeParams)
     extends BlackBox
     with Bridge[HostPortIO[CospikeBridgeTargetIO]] {
-  val moduleName = "firechip.core.bridges.CospikeBridgeModule"
+  val moduleName = "firechip.firesimonly.bridges.CospikeBridgeModule"
   val io       = IO(new CospikeBridgeTargetIO(params.widths))
   val bridgeIO = HostPort(io)
 
